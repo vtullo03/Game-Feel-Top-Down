@@ -1,28 +1,36 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
     private Vector3 velocity;
     private Vector3 acceleration;
     [SerializeField] private float maxSpeed;
+    private float currentMaxSpeed;
     [SerializeField] private float friction;
     [SerializeField] private float counterAccelerationModifier;
     
     [SerializeField] private float accelerationSpeed;
+    private float currentAccelerationSpeed;
     [SerializeField] private List<Transform> wallList = new List<Transform>();
     [SerializeField] private float movementIncrement;
-	
-	// directional modifiers
-	[SerializeField] private float backwardAcclerationModfier;
-	[SerializeField] private float sideAcclerationModifier;
+    
+    [SerializeField] private float driftingForce;
+    [SerializeField] private float turboAcclerationForce;
+    [SerializeField] private float turboMaxSpeed;
+    [SerializeField] private GameObject turboBoostBar;
+    private float maxTurboBoostCharge = 100f;
+    private float currentTurboBoostCharge = 0f;
 
 
     private void Start()
     {
       Application.targetFrameRate = 60;
+      turboBoostBar.GetComponent<Image>().fillAmount = 0f;
+      currentAccelerationSpeed = accelerationSpeed;
+      currentMaxSpeed = maxSpeed;
     }
 
 
@@ -32,14 +40,14 @@ public class PlayerMovement : MonoBehaviour
         acceleration = Vector3.zero;
         
         // Set acceleration based on player pressing WASD
-        if (Input.GetKey(KeyCode.W)) acceleration.y += 1 * sideAcclerationModifier;
-        if (Input.GetKey(KeyCode.S)) acceleration.y -= 1 * sideAcclerationModifier;
+        if (Input.GetKey(KeyCode.W)) acceleration.y += 1;
+        if (Input.GetKey(KeyCode.S)) acceleration.y -= 1;
         if (Input.GetKey(KeyCode.D)) acceleration.x += 1;
-        if (Input.GetKey(KeyCode.A)) acceleration.x -= 1 * backwardAcclerationModfier;
+        if (Input.GetKey(KeyCode.A)) acceleration.x -= 1;
 
 
         // Normalize the acceleration and multiply it by the accelerationSpeed and deltaTime
-        acceleration = acceleration.normalized * (accelerationSpeed * Time.deltaTime);
+        acceleration = acceleration.normalized * (currentAccelerationSpeed * Time.deltaTime);
         
         // Calculate the angle between the velocity and the acceleration
         float angleVelocityVsAcceleration = Vector3.Angle(velocity, acceleration);
@@ -50,8 +58,35 @@ public class PlayerMovement : MonoBehaviour
         // Add the acceleration to the velocity, and add a bit more acceleration based on how much the player is trying to counter the velocity
         velocity += acceleration + (acceleration * (counterPushRatio * counterAccelerationModifier));
         
+        // Drifting logic
+        if (Input.GetKey(KeyCode.A) && (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.W)))
+        {
+            velocity *= driftingForce;
+            if (currentTurboBoostCharge <= maxTurboBoostCharge) currentTurboBoostCharge += 0.5f;
+            else if (currentTurboBoostCharge > maxTurboBoostCharge) currentTurboBoostCharge = maxTurboBoostCharge;
+            turboBoostBar.GetComponent<Image>().fillAmount = currentTurboBoostCharge / maxTurboBoostCharge;
+        }
+        
+        // Turbo Boost logic
+        if (Input.GetKey(KeyCode.Space) && Input.GetKey(KeyCode.D))
+        {
+            if (currentTurboBoostCharge > 0.0f)
+            {
+                currentAccelerationSpeed *= turboAcclerationForce;
+                currentMaxSpeed *= turboMaxSpeed;
+                currentTurboBoostCharge -= 3.0f;
+            }
+            else if (currentTurboBoostCharge < 0.0f) currentTurboBoostCharge = 0.0f;
+            turboBoostBar.GetComponent<Image>().fillAmount = currentTurboBoostCharge / maxTurboBoostCharge;
+        }
+        else
+        {
+            currentAccelerationSpeed = accelerationSpeed;
+            currentMaxSpeed = maxSpeed;
+        }
+        
         // If the velocity is greater than maxSpeed, set the velocity to maxSpeed
-        if (velocity.magnitude > (maxSpeed * Time.deltaTime)) velocity = velocity.normalized * (maxSpeed * Time.deltaTime);
+        if (velocity.magnitude > (currentMaxSpeed * Time.deltaTime)) velocity = velocity.normalized * (currentMaxSpeed * Time.deltaTime);
         
         // If the player is not pressing any keys, apply friction to the velocity
         if (acceleration == Vector3.zero)
