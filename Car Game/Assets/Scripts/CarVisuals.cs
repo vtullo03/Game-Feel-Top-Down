@@ -18,7 +18,7 @@ public class CarVisuals : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D) || 
 			Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A) || 
-			Input.GetKey(KeyCode.W))
+			Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A))
         {
             if(transform.rotation.eulerAngles.z < maxAngle)
 				transform.Rotate(Vector3.forward * (rotationSpeed * Time.deltaTime));
@@ -26,7 +26,7 @@ public class CarVisuals : MonoBehaviour
 
         if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D) || 
 			Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A) || 
-			Input.GetKey(KeyCode.S))
+			Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.A))
         {
             if(transform.rotation.eulerAngles.z > -maxAngle)
 				transform.Rotate(Vector3.back * (rotationSpeed * Time.deltaTime));
