@@ -1063,6 +1063,7 @@ MonoBehaviour:
   maxAngle: 30
   rotationSpeed: 30
   resetRotationSpeed: 10
+  tireMarksPrefab: {fileID: 6684193645713881597, guid: 6a2ae51cb7e50a244b84100cd35fad58, type: 3}
 --- !u!1 &1261605546
 GameObject:
   m_ObjectHideFlags: 0

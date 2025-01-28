@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ObstacleCollisionDetection : MonoBehaviour
 {
@@ -26,6 +27,12 @@ public class ObstacleCollisionDetection : MonoBehaviour
             GameObject gameover = GameObject.Find("Canvas").transform.GetChild(0).gameObject;
             gameover.SetActive(true);
             Time.timeScale = 0;
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            Time.timeScale = 1;
         }
     }
     
