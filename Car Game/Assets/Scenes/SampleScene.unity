@@ -761,6 +761,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 701983265}
+  - component: {fileID: 701983266}
   m_Layer: 0
   m_Name: ObstacleSpawner
   m_TagString: Untagged
@@ -783,6 +784,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &701983266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 701983264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd3ee0359fdda0f49ae02c6d117eab0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstaclePrefab: {fileID: 5817376143319188229, guid: a4a60005015adae4286a5a7e13623d83, type: 3}
 --- !u!1 &715229168
 GameObject:
   m_ObjectHideFlags: 0
