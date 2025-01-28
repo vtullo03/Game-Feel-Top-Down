@@ -7,7 +7,6 @@ public class PlayerMovement : MonoBehaviour
 {
     private Vector3 velocity;
     private Vector3 acceleration;
-   // [SerializeField] private float speed;
     [SerializeField] private float maxSpeed;
     [SerializeField] private float friction;
     [SerializeField] private float counterAccelerationModifier;
@@ -15,6 +14,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float accelerationSpeed;
     [SerializeField] private List<Transform> wallList = new List<Transform>();
     [SerializeField] private float movementIncrement;
+	
+	// directional modifiers
+	[SerializeField] private float backwardAcclerationModfier;
+	[SerializeField] private float sideAcclerationModifier;
 
 
     private void Start()
@@ -29,10 +32,10 @@ public class PlayerMovement : MonoBehaviour
         acceleration = Vector3.zero;
         
         // Set acceleration based on player pressing WASD
-        if (Input.GetKey(KeyCode.W)) acceleration.y += 1;
-        if (Input.GetKey(KeyCode.S)) acceleration.y -= 1;
+        if (Input.GetKey(KeyCode.W)) acceleration.y += 1 * sideAcclerationModifier;
+        if (Input.GetKey(KeyCode.S)) acceleration.y -= 1 * sideAcclerationModifier;
         if (Input.GetKey(KeyCode.D)) acceleration.x += 1;
-        if (Input.GetKey(KeyCode.A)) acceleration.x -= 1;
+        if (Input.GetKey(KeyCode.A)) acceleration.x -= 1 * backwardAcclerationModfier;
 
 
         // Normalize the acceleration and multiply it by the accelerationSpeed and deltaTime

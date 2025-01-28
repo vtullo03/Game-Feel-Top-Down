@@ -385,12 +385,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 817dffe6ce544d04ea94b90c00f12d77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 0.1
-  friction: 10
+  maxSpeed: 10
+  friction: 1
   counterAccelerationModifier: 0.2
-  accelerationSpeed: 0.05
+  accelerationSpeed: 0.1
   wallList: []
   movementIncrement: 0.005
+  backwardAcclerationModfier: 0.5
+  sideAcclerationModifier: 0.5
 --- !u!1 &900153508
 GameObject:
   m_ObjectHideFlags: 0
@@ -492,7 +494,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxAngle: 30
-  rotationSpeed: 20
+  rotationSpeed: 30
+  resetRotationSpeed: 5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
